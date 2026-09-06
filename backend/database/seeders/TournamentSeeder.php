@@ -1,0 +1,5 @@
+<?php
+namespace Database\Seeders;
+use Illuminate\Database\Seeder;
+use App\Models\{City,Club,Tournament,User,Venue};
+class TournamentSeeder extends Seeder { public function run():void{ $organizer=User::firstOrCreate(['email'=>'organizer@chessmorocco.ma'],['name'=>'Morocco Chess Events','password'=>'password','role'=>'organizer']); $organizer->organizerProfile()->firstOrCreate(['organization_name'=>'Morocco Chess Events']); $city=City::where('name','Rabat')->firstOrFail(); $club=Club::firstOrCreate(['name'=>'Rabat Chess Club','city_id'=>$city->id]); $venue=Venue::firstOrCreate(['name'=>'Rabat Chess Hall','city_id'=>$city->id],['address'=>'Avenue Mohammed V','capacity'=>80]); Tournament::updateOrCreate(['name'=>'Rabat Open 2026'],['organizer_id'=>$organizer->id,'club_id'=>$club->id,'venue_id'=>$venue->id,'city_id'=>$city->id,'format'=>'swiss','status'=>'approved','start_date'=>now()->addMonth()->toDateString(),'registration_deadline'=>now()->addWeeks(3)->toDateString(),'max_players'=>80,'description'=>'Open chess tournament for Moroccan players.']); } }
